@@ -1,0 +1,48 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+
+# Virtual environment folder
+env/
+
+# Database file (SQLite)
+*.db
+
+# FastAPI logs (if any)
+*.log
+
+# VS Code settings
+.vscode/
+
+# IDE/editor specific files (you can uncomment these based on your editor)
+# .idea/  # JetBrains IDEs (e.g., PyCharm)
+# .vscode/  # VS Code
+# .pytest_cache/  # pytest cache
+# *.swp  # Vim swap files
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Coverage reports
+.coverage
+*.coveragerc
+
+# mypy (type checking) files
+.mypy_cache/
+.dmypy.json
+
+# Python virtual environment (common directories for virtualenv and conda)
+.venv/
+env/
+venv/
+
+# Docker-related files
+.docker/
+
+# Node.js-related files (if you decide to add a frontend later)
+node_modules/
+npm-debug.log
+yarn.lock
+
+# FastAPI-specific files
+# (if you are using Uvicorn or similar server logs, you may want to include them here)
