@@ -8,9 +8,14 @@ from . import database, models, auth
 from fastapi.security import OAuth2PasswordBearer
 
 
-SECRET_KEY = "YOUR_SECRET_KEY"  # Change this!
+SECRET_KEY = "YOUR_SECRET_KEY"  # Change it to os.getenv('SECRET_KEY')
 ALGORITHM = "HS256"
+
+#
+# Token Life Span
 ACCESS_TOKEN_EXPIRE_MINUTES = 30    # In minutes
+# Change it to what's suitable for the usecase
+#
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

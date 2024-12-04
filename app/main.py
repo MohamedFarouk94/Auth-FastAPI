@@ -23,8 +23,8 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(auth.get_db)):
     return new_user
 
 
-@app.post("/token/", response_model=schemas.Token)
-def login_user(form_data: schemas.UserCreate, db: Session = Depends(auth.get_db)):
+@app.post("/login/", response_model=schemas.Token)
+def login_user(form_data: schemas.UserLogin, db: Session = Depends(auth.get_db)):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
     if not user or not auth.verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")

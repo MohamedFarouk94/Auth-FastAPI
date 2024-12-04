@@ -4,15 +4,19 @@ from typing import Optional
 
 class UserBase(BaseModel):
     username: str
-    email: EmailStr
 
 
-class UserCreate(UserBase):
+class UserLogin(UserBase):
     password: str
+
+
+class UserCreate(UserLogin):
+    email: EmailStr
 
 
 class UserResponse(UserBase):
     id: int
+    email: EmailStr
     is_active: bool
     is_superuser: bool
 
