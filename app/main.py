@@ -15,7 +15,7 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(auth.get_db)):
     username_existed = db.query(models.User).filter(models.User.email == user.username).first()
     if username_existed:
         raise HTTPException(status_code=400, detail="Username already registered")
-    hashed_password = auth.get_password_hash(user.password)
+    hashed_password = auth.auth_manager.get_password_hash(user.password)
     new_user = models.User(username=user.username, email=user.email, hashed_password=hashed_password)
     db.add(new_user)
     db.commit()
@@ -26,20 +26,20 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(auth.get_db)):
 @app.post("/login/", response_model=schemas.Token)
 def login_user(form_data: schemas.UserLogin, db: Session = Depends(auth.get_db)):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
-    if not user or not auth.verify_password(form_data.password, user.hashed_password):
+    if not user or not auth.auth_manager.verify_password(form_data.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     token_data = {"sub": user.username}
-    token = auth.create_access_token(data=token_data)
+    token = auth.auth_manager.create_access_token(data=token_data)
     return {"access_token": token, "token_type": "bearer"}
 
 
 @app.get("/users/me/", response_model=schemas.UserResponse)
-def read_current_user(current_user: models.User = Depends(auth.get_current_user)):
+def read_current_user(current_user: models.User = Depends(auth.auth_manager.get_current_user)):
     return current_user
 
 
 @app.get("/users/{username}/")
-def do_action(username: str, current_user: models.User = Depends(auth.get_current_user)):
+def do_action(username: str, current_user: models.User = Depends(auth.auth_manager.get_current_user)):
     if current_user.username != username:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
